@@ -149,8 +149,10 @@ class ASRDiarizationPipeline:
             # get the diarizer end timestamp
             end_time = segment["segment"]["end"]
             # find the ASR end timestamp that is closest to the diarizer's end timestamp and cut the transcript to here
-            upto_idx = np.argmin(np.abs(end_timestamps - end_time))
-
+            try:
+                upto_idx = np.argmin(np.abs(end_timestamps - end_time))
+            except ValueError:
+                continue
             if group_by_speaker:
                 segmented_preds.append(
                     {
